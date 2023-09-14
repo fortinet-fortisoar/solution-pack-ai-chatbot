@@ -1,0 +1,198 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "OpenAI ChatBot > Handle New Conversation",
+    "aliasName": null,
+    "tag": null,
+    "description": "Get OpenAI response for a new conversation",
+    "isActive": true,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/498ef068-1207-405e-bcd2-19581dbd4dc5",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/243bccc4-a22a-4c17-8ca9-8915ec803274",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Chat Reply",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "alerts": "{{vars.input.records[0].alerts}}",
+                    "assets": "{{vars.input.records[0].assets}}",
+                    "people": [],
+                    "content": "<p>{{vars.steps.Create_Discussion.data.choices[0].message.content}}<\/p>",
+                    "replyTo": "{{vars.input.records[0]['@id']}}",
+                    "__replace": "",
+                    "incidents": "{{vars.input.records[0].incidents}}",
+                    "indicators": "{{vars.input.records[0].indicators}}",
+                    "recordTags": "{{vars.ai_name}}",
+                    "isImportant": false,
+                    "peopleUpdated": false
+                },
+                "_showJson": false,
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/comments",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "6eaafeb5-5aca-4a7b-9c7c-e0e0fd4a75e4"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "ai_tag": "#OpenAI",
+                "ai_name": "OpenAI",
+                "max_tokens": "15",
+                "useMockOutput": "False"
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "bcd52bd6-9a57-44a1-b99c-1a2b3980fb97"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Discussion",
+            "description": null,
+            "arguments": {
+                "name": "OpenAI",
+                "config": "d1c10444-0d08-41a2-ab7f-5433161bad1a",
+                "params": {
+                    "model": "gpt-3.5-turbo",
+                    "top_p": "",
+                    "message": "{{vars.input.records[0].content}}",
+                    "chat_type": "Question",
+                    "max_tokens": "{{vars.max_tokens}}",
+                    "temperature": ""
+                },
+                "version": "1.0.0",
+                "connector": "openai",
+                "operation": "chat_completions",
+                "mock_result": "{\n  \"data\": {\n    \"id\": \"chatcmpl-7nUcQiYTtFtXoNxggGBeyblZAKHh9\",\n    \"model\": \"gpt-3.5-turbo-0613\",\n    \"usage\": {\n      \"total_tokens\": 34,\n      \"prompt_tokens\": 24,\n      \"completion_tokens\": 10\n    },\n    \"object\": \"chat.completion\",\n    \"choices\": [\n      {\n        \"index\": 0,\n        \"message\": {\n          \"role\": \"assistant\",\n          \"content\": \"Stuxnet was first discovered in June 201\"\n        },\n        \"finish_reason\": \"length\"\n      }\n    ],\n    \"created\": 1692030126\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"1 seconds 518 ms\"\n}",
+                "operationTitle": "Create a chat completion",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "5af4588e-5b78-430d-89f0-bea6ec92ffdd"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "resource": "comments",
+                "resources": [
+                    "comments"
+                ],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": [
+                            "{{vars.input.records[0]}}"
+                        ]
+                    }
+                },
+                "fieldbasedtrigger": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "object",
+                            "field": "replyTo",
+                            "value": "true",
+                            "_value": {
+                                "@id": "true",
+                                "display": "",
+                                "itemValue": ""
+                            },
+                            "operator": "isnull"
+                        },
+                        {
+                            "logic": "OR",
+                            "filters": [
+                                {
+                                    "type": "primitive",
+                                    "field": "content",
+                                    "value": "%#OpenAI%",
+                                    "operator": "like",
+                                    "_operator": "like"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/ea155646-3821-4542-9702-b246da430a8d",
+            "group": null,
+            "uuid": "243bccc4-a22a-4c17-8ca9-8915ec803274"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Create Discussion",
+            "targetStep": "\/api\/3\/workflow_steps\/5af4588e-5b78-430d-89f0-bea6ec92ffdd",
+            "sourceStep": "\/api\/3\/workflow_steps\/bcd52bd6-9a57-44a1-b99c-1a2b3980fb97",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "8d5e2a75-ab13-42d0-b024-e19d256b8ddf"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Discussion -> Chat Reply",
+            "targetStep": "\/api\/3\/workflow_steps\/6eaafeb5-5aca-4a7b-9c7c-e0e0fd4a75e4",
+            "sourceStep": "\/api\/3\/workflow_steps\/5af4588e-5b78-430d-89f0-bea6ec92ffdd",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "779f8d8d-67c4-45e2-bbb2-2e71e75ad4e7"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> dswf",
+            "targetStep": "\/api\/3\/workflow_steps\/bcd52bd6-9a57-44a1-b99c-1a2b3980fb97",
+            "sourceStep": "\/api\/3\/workflow_steps\/243bccc4-a22a-4c17-8ca9-8915ec803274",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "b34dac15-e43d-4303-b471-548ca139f05e"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "9644ad0d-7e6b-49a8-adb6-32b240df89ba",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "OpenAI",
+        "chatbot"
+    ]
+}

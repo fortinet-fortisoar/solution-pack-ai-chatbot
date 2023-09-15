@@ -1,0 +1,352 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Chatsonic ChatBot > Handle New Reply",
+    "aliasName": null,
+    "tag": null,
+    "description": "Gets Chatsonic response for a new reply within a conversation",
+    "isActive": true,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/498ef068-1207-405e-bcd2-19581dbd4dc5",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/9ab91665-7b01-4b72-98a9-1dfb20a06899",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Chat Reply",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "alerts": "{{vars.input.records[0].alerts}}",
+                    "assets": "{{vars.input.records[0].assets}}",
+                    "people": [],
+                    "content": "<p>{{vars.steps.Conversation.data.message}}<\/p>",
+                    "replyTo": "{{vars.input.records[0].replyTo['@id']}}",
+                    "__replace": "",
+                    "incidents": "{{vars.input.records[0].incidents}}",
+                    "recordTags": "{{vars.ai_name}}",
+                    "isImportant": false,
+                    "peopleUpdated": false
+                },
+                "_showJson": false,
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/comments",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "975",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "dedf915b-0f5f-449c-9fba-dbb73b585536"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "ai_tag": "#Chatsonic",
+                "ai_name": "Chatsonic",
+                "comments": "[]",
+                "messages": "[]",
+                "useMockOutput": "False"
+            },
+            "status": null,
+            "top": "165",
+            "left": "300",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "8f3c6dc6-ce2b-4617-b0ef-52493da08040"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Conversation",
+            "description": null,
+            "arguments": {
+                "name": "Chatsonic",
+                "config": "d1c10444-0d08-41a2-ab7f-5433161bad1a",
+                "params": {
+                    "param@language": "en",
+                    "param@input_text": "{{vars.input.records[0].content}}",
+                    "param@history_data": "{{vars.messages}}",
+                    "param@google_enabled": false
+                },
+                "version": "1.0.0",
+                "connector": "writesonic-chatsonic",
+                "operation": "chat_conversation",
+                "operationTitle": "Converse With Chatsonic",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "840",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "fd39b3f6-e0e5-4846-99d7-041c5d9136f5"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Find Parent Comment",
+            "description": null,
+            "arguments": {
+                "query": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "primitive",
+                            "field": "id",
+                            "value": "{{vars.input.records[0].replyTo.id}}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        }
+                    ],
+                    "__selectFields": [
+                        "replies",
+                        "recordTags"
+                    ]
+                },
+                "module": "comments?$limit=1&$relationships=true&$fsr_max_relation_count=100",
+                "checkboxFields": true,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
+            "group": null,
+            "uuid": "b2951f30-12a0-4bcc-a7ac-a8a820ae6b74"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Comments",
+            "description": null,
+            "arguments": {
+                "_tmp_comments": "{{vars.comments.extend(vars.steps.Find_Parent_Comment.0.replies)}}\n{{vars.comments.append(vars.input.records[0].replyTo)}}"
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "e745428e-e85a-4eaf-a661-96d293287e34"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Is AI Comment",
+            "description": null,
+            "arguments": {
+                "conditions": [
+                    {
+                        "option": "yes",
+                        "step_iri": "\/api\/3\/workflow_steps\/b2951f30-12a0-4bcc-a7ac-a8a820ae6b74",
+                        "condition": "{{ vars.ai_name in vars.input.records[0].replyTo.recordTags or vars.ai_tag in vars.input.records[0].replyTo.content }}",
+                        "step_name": "Find Parent Comment"
+                    },
+                    {
+                        "option": "no",
+                        "default": true,
+                        "step_iri": "\/api\/3\/workflow_steps\/718329db-8f94-4305-bc8f-2b406af61770",
+                        "step_name": "Stop"
+                    }
+                ],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "300",
+            "stepType": "\/api\/3\/workflow_step_types\/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+            "group": null,
+            "uuid": "f1937b24-36fc-414b-a465-a9fd546aa89c"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Process Previous Comments",
+            "description": null,
+            "arguments": {
+                "_tmp_parse_comments": "{% if vars.comments|length > 0 %}\n    {% set conversation = vars.comments|reverse|list %}\n    {% for entry in conversation[:-1] %}\n        {% if vars.ai_name in entry.recordTags %}\n            {{ vars.messages.append({\"is_sent\": False,\"message\":entry.content}) }}\n        {% else %}\n            {{ vars.messages.append({\"is_sent\": True,\"message\":entry.content}) }}\n        {% endif %}\n    {% endfor %}\n{% endif %}"
+            },
+            "status": null,
+            "top": "705",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "78d2a85d-e3a9-4430-994c-9c013021d1a9"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "resource": "comments",
+                "resources": [
+                    "comments"
+                ],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": [
+                            "{{vars.input.records[0]}}"
+                        ]
+                    }
+                },
+                "fieldbasedtrigger": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "object",
+                            "field": "replyTo",
+                            "value": "false",
+                            "_value": {
+                                "@id": "false",
+                                "display": "",
+                                "itemValue": ""
+                            },
+                            "operator": "isnull"
+                        },
+                        {
+                            "type": "object",
+                            "field": "createUser",
+                            "value": "\/api\/3\/appliances\/57545210-2adc-472b-a24f-2df6ee8dfe63",
+                            "_value": {
+                                "@id": "\/api\/3\/appliances\/57545210-2adc-472b-a24f-2df6ee8dfe63",
+                                "display": "Playbook "
+                            },
+                            "operator": "neq"
+                        }
+                    ]
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "300",
+            "stepType": "\/api\/3\/workflow_step_types\/ea155646-3821-4542-9702-b246da430a8d",
+            "group": null,
+            "uuid": "9ab91665-7b01-4b72-98a9-1dfb20a06899"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Stop",
+            "description": null,
+            "arguments": {
+                "params": [],
+                "version": "3.2.4",
+                "connector": "cyops_utilities",
+                "operation": "no_op",
+                "operationTitle": "Utils: No Operation",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": null,
+            "uuid": "718329db-8f94-4305-bc8f-2b406af61770"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Conversation -> Chat Reply",
+            "targetStep": "\/api\/3\/workflow_steps\/dedf915b-0f5f-449c-9fba-dbb73b585536",
+            "sourceStep": "\/api\/3\/workflow_steps\/fd39b3f6-e0e5-4846-99d7-041c5d9136f5",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "02f25d31-f5f6-4c3b-a538-ce395b0ea12f"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Find Parent Comment -> Copy of Process Previous Comments",
+            "targetStep": "\/api\/3\/workflow_steps\/e745428e-e85a-4eaf-a661-96d293287e34",
+            "sourceStep": "\/api\/3\/workflow_steps\/b2951f30-12a0-4bcc-a7ac-a8a820ae6b74",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "44ae57f5-65fc-4f88-8542-945f3388e3cd"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Comments -> Process Previous Comments",
+            "targetStep": "\/api\/3\/workflow_steps\/78d2a85d-e3a9-4430-994c-9c013021d1a9",
+            "sourceStep": "\/api\/3\/workflow_steps\/e745428e-e85a-4eaf-a661-96d293287e34",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "95bd0e0b-0597-4ccb-aac1-da55fd5083e0"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Reply To -> Is Chatsonic Comment",
+            "targetStep": "\/api\/3\/workflow_steps\/f1937b24-36fc-414b-a465-a9fd546aa89c",
+            "sourceStep": "\/api\/3\/workflow_steps\/8f3c6dc6-ce2b-4617-b0ef-52493da08040",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e48bf470-168e-4d42-bf9f-34d2d0dfaf78"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is AI Comment -> Find Parent Comment",
+            "targetStep": "\/api\/3\/workflow_steps\/b2951f30-12a0-4bcc-a7ac-a8a820ae6b74",
+            "sourceStep": "\/api\/3\/workflow_steps\/f1937b24-36fc-414b-a465-a9fd546aa89c",
+            "label": "yes",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "0cbb1a2c-ee52-4523-8d75-38a981d416ca"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is AI Comment -> Stop",
+            "targetStep": "\/api\/3\/workflow_steps\/718329db-8f94-4305-bc8f-2b406af61770",
+            "sourceStep": "\/api\/3\/workflow_steps\/f1937b24-36fc-414b-a465-a9fd546aa89c",
+            "label": "no",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "b2fde4ba-020c-4671-b838-61d717b404aa"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Process Previous Comments -> Conversation",
+            "targetStep": "\/api\/3\/workflow_steps\/fd39b3f6-e0e5-4846-99d7-041c5d9136f5",
+            "sourceStep": "\/api\/3\/workflow_steps\/78d2a85d-e3a9-4430-994c-9c013021d1a9",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "cc9b80b9-f14d-4dd0-9fe2-c8467fe289a9"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> dswf",
+            "targetStep": "\/api\/3\/workflow_steps\/8f3c6dc6-ce2b-4617-b0ef-52493da08040",
+            "sourceStep": "\/api\/3\/workflow_steps\/9ab91665-7b01-4b72-98a9-1dfb20a06899",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "a286f14e-70ef-4367-9ce8-ddc11e51ab29"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "57f3b4f8-5168-4ec0-85dd-78fbe8489f4f",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "writesonic-chatsonic",
+        "chatbot"
+    ]
+}

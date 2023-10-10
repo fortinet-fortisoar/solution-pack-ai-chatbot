@@ -1,7 +1,7 @@
 {
     "@type": "Workflow",
     "triggerLimit": null,
-    "name": "OpenAI ChatBot > Handle New Conversation",
+    "name": "Bard ChatBot > Handle New Conversation",
     "aliasName": null,
     "tag": null,
     "description": "Get OpenAI response for a new conversation",
@@ -13,7 +13,7 @@
     "synchronous": false,
     "collection": "\/api\/3\/workflow_collections\/498ef068-1207-405e-bcd2-19581dbd4dc5",
     "versions": [],
-    "triggerStep": "\/api\/3\/workflow_steps\/243bccc4-a22a-4c17-8ca9-8915ec803274",
+    "triggerStep": "\/api\/3\/workflow_steps\/3d78acfe-ae23-4e8b-a1e1-97c531415fd7",
     "steps": [
         {
             "@type": "WorkflowStep",
@@ -25,7 +25,7 @@
                     "alerts": "{{vars.input.records[0].alerts}}",
                     "assets": "{{vars.input.records[0].assets}}",
                     "people": [],
-                    "content": "<p>{{vars.steps.Create_Discussion.data.choices[0].message.content}}<\/p>",
+                    "content": "<p>{{vars.steps.Create_Message.data.candidates[0].content}}<\/p>",
                     "replyTo": "{{vars.input.records[0]['@id']}}",
                     "__replace": "",
                     "incidents": "{{vars.input.records[0].incidents}}",
@@ -34,7 +34,7 @@
                     "isImportant": false,
                     "peopleUpdated": false
                 },
-                "_showJson": false,
+                "_showJson": true,
                 "operation": "Overwrite",
                 "collection": "\/api\/3\/comments",
                 "__recommend": [],
@@ -48,15 +48,15 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
             "group": null,
-            "uuid": "6eaafeb5-5aca-4a7b-9c7c-e0e0fd4a75e4"
+            "uuid": "54c065ce-f294-4913-8809-9e79f121d792"
         },
         {
             "@type": "WorkflowStep",
             "name": "Configuration",
             "description": null,
             "arguments": {
-                "ai_tag": "@OpenAI",
-                "ai_name": "OpenAI",
+                "ai_tag": "@Bard",
+                "ai_name": "Bard",
                 "max_tokens": "15",
                 "useMockOutput": "False"
             },
@@ -65,28 +65,30 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
-            "uuid": "bcd52bd6-9a57-44a1-b99c-1a2b3980fb97"
+            "uuid": "1b8d9966-30cb-426c-b8ce-98562a236baf"
         },
         {
             "@type": "WorkflowStep",
-            "name": "Create Discussion",
+            "name": "Create Message",
             "description": null,
             "arguments": {
-                "name": "OpenAI",
-                "config": "d1c10444-0d08-41a2-ab7f-5433161bad1a",
+                "name": "Google Bard",
+                "config": "cebb8da6-581c-4009-9415-5705022cec0d",
                 "params": {
-                    "model": "gpt-3.5-turbo",
-                    "top_p": "",
-                    "message": "{{vars.input.records[0].content}}",
-                    "chat_type": "Question",
-                    "max_tokens": "{{vars.max_tokens}}",
-                    "temperature": ""
+                    "name": "models\/chat-bison-001",
+                    "topK": 20,
+                    "topP": "",
+                    "context": "",
+                    "examples": "",
+                    "messages": "[\n  {\n    \"content\": \"{{vars.input.records[0].content}}\"\n  }\n]",
+                    "temperature": "",
+                    "candidate_count": 1
                 },
                 "version": "1.0.0",
-                "connector": "openai",
-                "operation": "chat_completions",
-                "mock_result": "{\n  \"data\": {\n    \"id\": \"chatcmpl-7nUcQiYTtFtXoNxggGBeyblZAKHh9\",\n    \"model\": \"gpt-3.5-turbo-0613\",\n    \"usage\": {\n      \"total_tokens\": 34,\n      \"prompt_tokens\": 24,\n      \"completion_tokens\": 10\n    },\n    \"object\": \"chat.completion\",\n    \"choices\": [\n      {\n        \"index\": 0,\n        \"message\": {\n          \"role\": \"assistant\",\n          \"content\": \"Stuxnet was first discovered in June 201\"\n        },\n        \"finish_reason\": \"length\"\n      }\n    ],\n    \"created\": 1692030126\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"1 seconds 518 ms\"\n}",
-                "operationTitle": "Create a chat completion",
+                "connector": "google-bard",
+                "operation": "generate_message",
+                "mock_result": "{\n  \"data\": {\n    \"messages\": [\n      {\n        \"author\": \"0\",\n        \"content\": \"<p>@Bard what is stuxnet<\/p>\\n<p>&nbsp;<\/p>\"\n      }\n    ],\n    \"candidates\": [\n      {\n        \"author\": \"1\",\n        \"content\": \"Stuxnet is a malicious computer worm that targeted industrial control systems (ICS). It was first discovered in 2010 and is believed to have been developed by the United States and Israel to sabotage Iran's nuclear program. Stuxnet was the first known computer worm to target ICS, and it caused significant damage to Iran's nuclear program.\\n\\nStuxnet was designed to infect Windows-based computers that were connected to ICS networks. Once infected, Stuxnet could take control of the ICS systems and cause them to malfunction. Stuxnet also had the ability to steal data from the ICS systems.\\n\\nStuxnet was a highly sophisticated piece of malware, and it took experts several months to fully understand how it worked.\"\n      }\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"11 seconds 564 ms\"\n}",
+                "operationTitle": "Generate Message",
                 "pickFromTenant": false,
                 "step_variables": []
             },
@@ -95,7 +97,7 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
             "group": null,
-            "uuid": "5af4588e-5b78-430d-89f0-bea6ec92ffdd"
+            "uuid": "67d3424a-cf13-4202-a881-a69cb52bbd44"
         },
         {
             "@type": "WorkflowStep",
@@ -138,7 +140,7 @@
                                 {
                                     "type": "primitive",
                                     "field": "content",
-                                    "value": "%@OpenAI%",
+                                    "value": "%@Bard%",
                                     "operator": "like",
                                     "_operator": "like"
                                 }
@@ -153,49 +155,49 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/ea155646-3821-4542-9702-b246da430a8d",
             "group": null,
-            "uuid": "243bccc4-a22a-4c17-8ca9-8915ec803274"
+            "uuid": "3d78acfe-ae23-4e8b-a1e1-97c531415fd7"
         }
     ],
     "routes": [
         {
             "@type": "WorkflowRoute",
-            "name": "Configuration -> Create Discussion",
-            "targetStep": "\/api\/3\/workflow_steps\/5af4588e-5b78-430d-89f0-bea6ec92ffdd",
-            "sourceStep": "\/api\/3\/workflow_steps\/bcd52bd6-9a57-44a1-b99c-1a2b3980fb97",
+            "name": "Configuration -> Create Message",
+            "targetStep": "\/api\/3\/workflow_steps\/67d3424a-cf13-4202-a881-a69cb52bbd44",
+            "sourceStep": "\/api\/3\/workflow_steps\/1b8d9966-30cb-426c-b8ce-98562a236baf",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "8d5e2a75-ab13-42d0-b024-e19d256b8ddf"
+            "uuid": "3e25408d-20ed-48ca-aee4-0470186e6eb6"
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Create Discussion -> Chat Reply",
-            "targetStep": "\/api\/3\/workflow_steps\/6eaafeb5-5aca-4a7b-9c7c-e0e0fd4a75e4",
-            "sourceStep": "\/api\/3\/workflow_steps\/5af4588e-5b78-430d-89f0-bea6ec92ffdd",
+            "name": "Create Message -> Chat Reply",
+            "targetStep": "\/api\/3\/workflow_steps\/54c065ce-f294-4913-8809-9e79f121d792",
+            "sourceStep": "\/api\/3\/workflow_steps\/67d3424a-cf13-4202-a881-a69cb52bbd44",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "779f8d8d-67c4-45e2-bbb2-2e71e75ad4e7"
+            "uuid": "ab0a9393-ee94-4252-9b85-f26f88dcc879"
         },
         {
             "@type": "WorkflowRoute",
             "name": "Start -> dswf",
-            "targetStep": "\/api\/3\/workflow_steps\/bcd52bd6-9a57-44a1-b99c-1a2b3980fb97",
-            "sourceStep": "\/api\/3\/workflow_steps\/243bccc4-a22a-4c17-8ca9-8915ec803274",
+            "targetStep": "\/api\/3\/workflow_steps\/1b8d9966-30cb-426c-b8ce-98562a236baf",
+            "sourceStep": "\/api\/3\/workflow_steps\/3d78acfe-ae23-4e8b-a1e1-97c531415fd7",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "b34dac15-e43d-4303-b471-548ca139f05e"
+            "uuid": "a094b946-a610-456c-aee2-157d9f9528c1"
         }
     ],
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
-    "uuid": "9644ad0d-7e6b-49a8-adb6-32b240df89ba",
+    "uuid": "e1358e83-2a46-4553-a1c1-6f406e77efa4",
     "owners": [],
     "isPrivate": false,
     "deletedAt": null,
     "recordTags": [
-        "OpenAI",
-        "chatbot"
+        "chatbot",
+        "Bard"
     ]
 }

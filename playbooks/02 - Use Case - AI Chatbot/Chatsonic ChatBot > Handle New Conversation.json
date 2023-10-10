@@ -6,14 +6,14 @@
     "tag": null,
     "description": "Get Chatsonic response for a new conversation",
     "isActive": true,
-    "debug": true,
+    "debug": false,
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [],
     "synchronous": false,
     "collection": "\/api\/3\/workflow_collections\/498ef068-1207-405e-bcd2-19581dbd4dc5",
     "versions": [],
-    "triggerStep": "\/api\/3\/workflow_steps\/f7d38adb-f677-4e72-a823-e75d3665c4b4",
+    "triggerStep": "\/api\/3\/workflow_steps\/73442839-40b8-4cb3-b69e-0d91896dd8e7",
     "steps": [
         {
             "@type": "WorkflowStep",
@@ -48,14 +48,14 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
             "group": null,
-            "uuid": "fc918bb0-a6f8-45d5-b418-6b7ff7518651"
+            "uuid": "6f7d6c2c-87b0-42d1-a0c5-936dcce498da"
         },
         {
             "@type": "WorkflowStep",
             "name": "Configuration",
             "description": null,
             "arguments": {
-                "ai_tag": "#Chatsonic",
+                "ai_tag": "@Chatsonic",
                 "ai_name": "Chatsonic",
                 "max_tokens": "15",
                 "useMockOutput": "False"
@@ -65,7 +65,7 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
-            "uuid": "7a5b5c93-67f0-48f6-b62e-a63e616451f9"
+            "uuid": "1788f5bc-1fa3-44f6-b64a-d9510652bda4"
         },
         {
             "@type": "WorkflowStep",
@@ -80,7 +80,7 @@
                     "param@google_enabled": false
                 },
                 "version": "1.0.0",
-                "connector": "writesonic-chatsonic",
+                "connector": "chatsonic",
                 "operation": "chat_completions",
                 "operationTitle": "Ask a Question",
                 "pickFromTenant": false,
@@ -91,7 +91,7 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
             "group": null,
-            "uuid": "3d6806d9-791e-491c-a0d5-24757692ea52"
+            "uuid": "a54e7ca6-a2aa-4453-bc65-fe0bc63582bb"
         },
         {
             "@type": "WorkflowStep",
@@ -102,6 +102,7 @@
                 "resources": [
                     "comments"
                 ],
+                "__triggerLimit": true,
                 "step_variables": {
                     "input": {
                         "params": [],
@@ -110,6 +111,7 @@
                         ]
                     }
                 },
+                "triggerOnSource": true,
                 "fieldbasedtrigger": {
                     "sort": [],
                     "limit": 30,
@@ -132,63 +134,64 @@
                                 {
                                     "type": "primitive",
                                     "field": "content",
-                                    "value": "%#Chatsonic%",
+                                    "value": "%@Chatsonic%",
                                     "operator": "like",
                                     "_operator": "like"
                                 }
                             ]
                         }
                     ]
-                }
+                },
+                "triggerOnReplicate": false
             },
             "status": null,
             "top": "30",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/ea155646-3821-4542-9702-b246da430a8d",
             "group": null,
-            "uuid": "f7d38adb-f677-4e72-a823-e75d3665c4b4"
+            "uuid": "73442839-40b8-4cb3-b69e-0d91896dd8e7"
         }
     ],
     "routes": [
         {
             "@type": "WorkflowRoute",
             "name": "Configuration -> Create Discussion",
-            "targetStep": "\/api\/3\/workflow_steps\/3d6806d9-791e-491c-a0d5-24757692ea52",
-            "sourceStep": "\/api\/3\/workflow_steps\/7a5b5c93-67f0-48f6-b62e-a63e616451f9",
+            "targetStep": "\/api\/3\/workflow_steps\/a54e7ca6-a2aa-4453-bc65-fe0bc63582bb",
+            "sourceStep": "\/api\/3\/workflow_steps\/1788f5bc-1fa3-44f6-b64a-d9510652bda4",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "bb53fc34-c05c-40e0-8f76-0cfc71a5d4a5"
+            "uuid": "ff0285f6-4e11-46b6-b8d6-645c95fd6a20"
         },
         {
             "@type": "WorkflowRoute",
             "name": "Create Discussion -> Chat Reply",
-            "targetStep": "\/api\/3\/workflow_steps\/fc918bb0-a6f8-45d5-b418-6b7ff7518651",
-            "sourceStep": "\/api\/3\/workflow_steps\/3d6806d9-791e-491c-a0d5-24757692ea52",
+            "targetStep": "\/api\/3\/workflow_steps\/6f7d6c2c-87b0-42d1-a0c5-936dcce498da",
+            "sourceStep": "\/api\/3\/workflow_steps\/a54e7ca6-a2aa-4453-bc65-fe0bc63582bb",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "28c0474d-0597-406a-b542-c35d916f96fe"
+            "uuid": "8e006ffe-f6ac-4c48-93f6-cefccc1674d2"
         },
         {
             "@type": "WorkflowRoute",
             "name": "Start -> dswf",
-            "targetStep": "\/api\/3\/workflow_steps\/7a5b5c93-67f0-48f6-b62e-a63e616451f9",
-            "sourceStep": "\/api\/3\/workflow_steps\/f7d38adb-f677-4e72-a823-e75d3665c4b4",
+            "targetStep": "\/api\/3\/workflow_steps\/1788f5bc-1fa3-44f6-b64a-d9510652bda4",
+            "sourceStep": "\/api\/3\/workflow_steps\/73442839-40b8-4cb3-b69e-0d91896dd8e7",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "596a668e-3563-42eb-955c-640f1b516469"
+            "uuid": "a4e0ea33-9355-48fe-85b7-c52fae5c4586"
         }
     ],
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
-    "uuid": "9b498525-f4d0-4276-9702-007870884236",
+    "uuid": "cb7d66ed-352e-4b88-9080-292d373642b9",
     "owners": [],
     "isPrivate": false,
     "deletedAt": null,
     "recordTags": [
-        "writesonic-chatsonic",
-        "chatbot"
+        "chatbot",
+        "writesonic-chatsonic"
     ]
 }

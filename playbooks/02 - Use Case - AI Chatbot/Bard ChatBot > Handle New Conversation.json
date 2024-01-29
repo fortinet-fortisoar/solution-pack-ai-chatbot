@@ -1,0 +1,203 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Bard ChatBot > Handle New Conversation",
+    "aliasName": null,
+    "tag": null,
+    "description": "Get OpenAI response for a new conversation",
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/498ef068-1207-405e-bcd2-19581dbd4dc5",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/3d78acfe-ae23-4e8b-a1e1-97c531415fd7",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Chat Reply",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "alerts": "{{vars.input.records[0].alerts}}",
+                    "assets": "{{vars.input.records[0].assets}}",
+                    "people": [],
+                    "content": "<p>{{vars.steps.Create_Message.data.candidates[0].content}}<\/p>",
+                    "replyTo": "{{vars.input.records[0]['@id']}}",
+                    "__replace": "",
+                    "incidents": "{{vars.input.records[0].incidents}}",
+                    "indicators": "{{vars.input.records[0].indicators}}",
+                    "recordTags": "{{vars.ai_name}}",
+                    "isImportant": false,
+                    "peopleUpdated": false
+                },
+                "_showJson": true,
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/comments",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "54c065ce-f294-4913-8809-9e79f121d792"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "ai_tag": "@Bard",
+                "ai_name": "Bard",
+                "max_tokens": "15",
+                "useMockOutput": "False"
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "1b8d9966-30cb-426c-b8ce-98562a236baf"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Message",
+            "description": null,
+            "arguments": {
+                "name": "Google Bard",
+                "config": "cebb8da6-581c-4009-9415-5705022cec0d",
+                "params": {
+                    "name": "models\/chat-bison-001",
+                    "topK": 20,
+                    "topP": "",
+                    "context": "",
+                    "examples": "",
+                    "messages": "[\n  {\n    \"content\": \"{{vars.input.records[0].content}}\"\n  }\n]",
+                    "temperature": "",
+                    "candidate_count": 1
+                },
+                "version": "1.0.0",
+                "connector": "google-bard",
+                "operation": "generate_message",
+                "mock_result": "{\n  \"data\": {\n    \"messages\": [\n      {\n        \"author\": \"0\",\n        \"content\": \"<p>@Bard what is stuxnet<\/p>\\n<p>&nbsp;<\/p>\"\n      }\n    ],\n    \"candidates\": [\n      {\n        \"author\": \"1\",\n        \"content\": \"Stuxnet is a malicious computer worm that targeted industrial control systems (ICS). It was first discovered in 2010 and is believed to have been developed by the United States and Israel to sabotage Iran's nuclear program. Stuxnet was the first known computer worm to target ICS, and it caused significant damage to Iran's nuclear program.\\n\\nStuxnet was designed to infect Windows-based computers that were connected to ICS networks. Once infected, Stuxnet could take control of the ICS systems and cause them to malfunction. Stuxnet also had the ability to steal data from the ICS systems.\\n\\nStuxnet was a highly sophisticated piece of malware, and it took experts several months to fully understand how it worked.\"\n      }\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"11 seconds 564 ms\"\n}",
+                "operationTitle": "Generate Message",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "67d3424a-cf13-4202-a881-a69cb52bbd44"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "resource": "comments",
+                "resources": [
+                    "comments"
+                ],
+                "__triggerLimit": true,
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": [
+                            "{{vars.input.records[0]}}"
+                        ]
+                    }
+                },
+                "triggerOnSource": true,
+                "fieldbasedtrigger": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "object",
+                            "field": "replyTo",
+                            "value": "true",
+                            "_value": {
+                                "@id": "true",
+                                "display": "",
+                                "itemValue": ""
+                            },
+                            "operator": "isnull"
+                        },
+                        {
+                            "logic": "OR",
+                            "filters": [
+                                {
+                                    "type": "primitive",
+                                    "field": "content",
+                                    "value": "%@Bard%",
+                                    "operator": "like",
+                                    "_operator": "like"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "triggerOnReplicate": false
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/ea155646-3821-4542-9702-b246da430a8d",
+            "group": null,
+            "uuid": "3d78acfe-ae23-4e8b-a1e1-97c531415fd7"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Create Message",
+            "targetStep": "\/api\/3\/workflow_steps\/67d3424a-cf13-4202-a881-a69cb52bbd44",
+            "sourceStep": "\/api\/3\/workflow_steps\/1b8d9966-30cb-426c-b8ce-98562a236baf",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "3e25408d-20ed-48ca-aee4-0470186e6eb6"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Message -> Chat Reply",
+            "targetStep": "\/api\/3\/workflow_steps\/54c065ce-f294-4913-8809-9e79f121d792",
+            "sourceStep": "\/api\/3\/workflow_steps\/67d3424a-cf13-4202-a881-a69cb52bbd44",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ab0a9393-ee94-4252-9b85-f26f88dcc879"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> dswf",
+            "targetStep": "\/api\/3\/workflow_steps\/1b8d9966-30cb-426c-b8ce-98562a236baf",
+            "sourceStep": "\/api\/3\/workflow_steps\/3d78acfe-ae23-4e8b-a1e1-97c531415fd7",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "a094b946-a610-456c-aee2-157d9f9528c1"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "e1358e83-2a46-4553-a1c1-6f406e77efa4",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "chatbot",
+        "Bard"
+    ]
+}

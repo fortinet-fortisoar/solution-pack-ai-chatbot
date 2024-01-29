@@ -1,0 +1,39 @@
+{
+    "name": "aIChatbot",
+    "version": "1.0.0",
+    "fsrMinCompatibility": "7.4.2",
+    "type": "solutionpack",
+    "local": true,
+    "label": "AI Chatbot",
+    "dependencies": [
+        {
+            "name": "sOARFramework",
+            "type": "solutionpack",
+            "label": "SOAR Framework",
+            "minVersion": null
+        }
+    ],
+    "prerequisite": "- OpenAI and/or Chatsonic and/or Google Bard connectors are required",
+    "publisher": "Naili.M",
+    "description": "Enables analysts to seek help by asking Machine Learning NLP engines any question. The Solution Pack also supports conversation mode where analysts could use the comment section of the workspace to ask several contextualized questions and get the responses for them.\nTo ask a question or start a conversation simply start your comment within any alert record with: @NameOfTheAI then your question, exp:[ @OpenAI how to defend against stuxnet ]. To carry on the conversation simply reply to the Chatbot answer. The solution pack supports using several engines at the same time by adding all the relvant tags before the question. So if you need an asnwer from Chatsonic and Bard at the same time, you could start your comment/question with @Chatsonic @Bard YOUR QUESTION HERE",
+    "help": null,
+    "category": [
+        "ML Service"
+    ],
+    "supportInfo": null,
+    "iconLarge": "fsr-icon-large.png",
+    "postInstallConfig": {
+        "enabled": false
+    },
+    "recordTags": [
+        "mlengine"
+    ],
+    "date": "2023-08-31T17:21:04+00:00",
+    "contents": {
+        "playbooks": [
+            {
+                "name": "02 - Use Case - AI Chatbot"
+            }
+        ]
+    }
+}

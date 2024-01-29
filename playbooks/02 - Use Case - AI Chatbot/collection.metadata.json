@@ -1,0 +1,11 @@
+{
+    "@context": "\/api\/3\/contexts\/WorkflowCollection",
+    "@type": "WorkflowCollection",
+    "name": "02 - Use Case - AI Chatbot",
+    "description": null,
+    "visible": true,
+    "image": null,
+    "uuid": "498ef068-1207-405e-bcd2-19581dbd4dc5",
+    "deletedAt": null,
+    "recordTags": []
+}

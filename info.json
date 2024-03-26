@@ -1,7 +1,7 @@
 {
     "name": "aIChatbot",
     "version": "1.0.0",
-    "fsrMinCompatibility": "7.4.2",
+    "fsrMinCompatibility": "7.2.0",
     "type": "solutionpack",
     "local": true,
     "label": "AI Chatbot",
@@ -28,11 +28,25 @@
     "recordTags": [
         "mlengine"
     ],
-    "date": "2023-08-31T17:21:04+00:00",
+    "date": "2024-03-26T05:51:58+00:00",
     "contents": {
         "playbooks": [
             {
                 "name": "02 - Use Case - AI Chatbot"
+            }
+        ],
+        "connectors": [
+            {
+                "name": "Google Bard",
+                "apiName": "google-bard"
+            },
+            {
+                "name": "OpenAI",
+                "apiName": "openai"
+            },
+            {
+                "name": "Writesonic Chatsonic",
+                "apiName": "chatsonic"
             }
         ]
     }

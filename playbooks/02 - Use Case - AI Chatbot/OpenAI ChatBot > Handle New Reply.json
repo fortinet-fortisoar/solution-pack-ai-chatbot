@@ -6,7 +6,7 @@
     "tag": null,
     "description": "Gets OpenAI response for a new reply within a conversation",
     "isActive": true,
-    "debug": false,
+    "debug": true,
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [],
@@ -349,7 +349,7 @@
     "isPrivate": false,
     "deletedAt": null,
     "recordTags": [
-        "OpenAI",
-        "chatbot"
+        "chatbot",
+        "OpenAI"
     ]
 }

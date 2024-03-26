@@ -6,7 +6,7 @@
     "tag": null,
     "description": "Get Chatsonic response for a new conversation",
     "isActive": true,
-    "debug": false,
+    "debug": true,
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [],

@@ -4,9 +4,9 @@
     "name": "Bard ChatBot > Handle New Conversation",
     "aliasName": null,
     "tag": null,
-    "description": "Get OpenAI response for a new conversation",
+    "description": "Get Bard response for a new conversation",
     "isActive": true,
-    "debug": false,
+    "debug": true,
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [],
@@ -197,7 +197,7 @@
     "isPrivate": false,
     "deletedAt": null,
     "recordTags": [
-        "chatbot",
-        "Bard"
+        "Bard",
+        "chatbot"
     ]
 }

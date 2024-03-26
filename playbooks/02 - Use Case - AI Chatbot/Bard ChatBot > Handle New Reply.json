@@ -6,7 +6,7 @@
     "tag": null,
     "description": "Gets Bard response for a new reply within a conversation",
     "isActive": true,
-    "debug": true,
+    "debug": false,
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [],

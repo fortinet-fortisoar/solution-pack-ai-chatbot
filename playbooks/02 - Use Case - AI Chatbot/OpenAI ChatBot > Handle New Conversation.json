@@ -196,6 +196,7 @@
     "deletedAt": null,
     "recordTags": [
         "chatbot",
-        "OpenAI"
+        "OpenAI",
+        "PostCreate"
     ]
 }

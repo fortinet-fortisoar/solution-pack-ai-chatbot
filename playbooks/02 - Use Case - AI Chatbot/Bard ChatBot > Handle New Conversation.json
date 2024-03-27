@@ -198,6 +198,7 @@
     "deletedAt": null,
     "recordTags": [
         "Bard",
-        "chatbot"
+        "chatbot",
+        "PostCreate"
     ]
 }

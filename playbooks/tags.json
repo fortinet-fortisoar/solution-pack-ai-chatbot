@@ -1,6 +1,7 @@
 [
     "Bard",
     "OpenAI",
+    "PostCreate",
     "chatbot",
     "writesonic-chatsonic"
 ]

@@ -12,7 +12,7 @@
 The **AI Chatbot** solution pack depends on the following solution packs that are installed automatically &ndash; if not already installed.
 | Solution Pack Name | Version | Purpose |
 | :--------------------- | :---------------------| :--------------------------------------- |
-| SOAR Framework |  |  |
+| SOAR Framework | v2.1.1 and later | Required for Incident Response modules |
 
 
 

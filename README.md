@@ -2,7 +2,7 @@
 
 * **Version**: 1.0.0
 * **Certified**: No
-* **Publisher**: Naili.M
+* **Publisher**: Fortinet CSE
 * **Compatible Version**: FortiSOAR v7.2.0 and later
 
 # Overview

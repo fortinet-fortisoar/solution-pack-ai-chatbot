@@ -14,7 +14,7 @@
         }
     ],
     "prerequisite": "- OpenAI and/or Chatsonic and/or Google Bard connectors are required",
-    "publisher": "Naili.M",
+    "publisher": "Fortinet CSE",
     "description": "Enables analysts to seek help by asking Machine Learning NLP engines any question. The Solution Pack also supports conversation mode where analysts could use the comment section of the workspace to ask several contextualized questions and get the responses for them.",
     "help": "https://github.com/fortinet-fortisoar/solution-pack-ai-chatbot/blob/release/1.0.0/README.md",
     "category": [

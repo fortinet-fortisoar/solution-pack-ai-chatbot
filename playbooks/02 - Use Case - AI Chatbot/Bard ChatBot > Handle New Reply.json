@@ -4,7 +4,7 @@
     "name": "Bard ChatBot > Handle New Reply",
     "aliasName": null,
     "tag": null,
-    "description": "Gets Chatsonic response for a new reply within a conversation",
+    "description": "Gets Bard response for a new reply within a conversation",
     "isActive": true,
     "debug": false,
     "singleRecordExecution": false,
@@ -353,7 +353,8 @@
     "isPrivate": false,
     "deletedAt": null,
     "recordTags": [
+        "Bard",
         "chatbot",
-        "Bard"
+        "PostCreate"
     ]
 }

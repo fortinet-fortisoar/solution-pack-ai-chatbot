@@ -195,7 +195,8 @@
     "isPrivate": false,
     "deletedAt": null,
     "recordTags": [
+        "chatbot",
         "OpenAI",
-        "chatbot"
+        "PostCreate"
     ]
 }

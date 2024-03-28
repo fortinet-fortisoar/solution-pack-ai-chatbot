@@ -1,0 +1,41 @@
+[
+    {
+        "name": "google-bard",
+        "label": "Google Bard",
+        "category": [
+            "Miscellaneous"
+        ],
+        "description": "Google Bard is a conversational AI chatbot, based initially on the LaMDA family of large language models and later the PaLM LLM.",
+        "publisher": "Fortinet",
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    },
+    {
+        "name": "openai",
+        "label": "OpenAI",
+        "category": [
+            "Miscellaneous"
+        ],
+        "description": "This integration supports interacting with OpenAI's powerful language model, ChatGPT from FortiSOAR workflows",
+        "publisher": "Fortinet",
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    },
+    {
+        "name": "chatsonic",
+        "label": "Writesonic Chatsonic",
+        "category": [
+            "Miscellaneous"
+        ],
+        "description": "This integration supports Writesonic's Chatsonic generative AI. A powerful language model with real time data",
+        "publisher": "Naili.M",
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    }
+]

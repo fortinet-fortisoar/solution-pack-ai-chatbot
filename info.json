@@ -1,7 +1,7 @@
 {
     "name": "aIChatbot",
     "version": "1.0.0",
-    "fsrMinCompatibility": "7.4.2",
+    "fsrMinCompatibility": "7.2.0",
     "type": "solutionpack",
     "local": true,
     "label": "AI Chatbot",
@@ -14,9 +14,9 @@
         }
     ],
     "prerequisite": "- OpenAI and/or Chatsonic and/or Google Bard connectors are required",
-    "publisher": "Naili.M",
-    "description": "Enables analysts to seek help by asking Machine Learning NLP engines any question. The Solution Pack also supports conversation mode where analysts could use the comment section of the workspace to ask several contextualized questions and get the responses for them.\nTo ask a question or start a conversation simply start your comment within any alert record with: @NameOfTheAI then your question, exp:[ @OpenAI how to defend against stuxnet ]. To carry on the conversation simply reply to the Chatbot answer. The solution pack supports using several engines at the same time by adding all the relvant tags before the question. So if you need an asnwer from Chatsonic and Bard at the same time, you could start your comment/question with @Chatsonic @Bard YOUR QUESTION HERE",
-    "help": null,
+    "publisher": "Fortinet CSE",
+    "description": "Enables analysts to seek help by asking Machine Learning NLP engines any question. The Solution Pack also supports conversation mode where analysts could use the comment section of the workspace to ask several contextualized questions and get the responses for them.",
+    "help": "https://github.com/fortinet-fortisoar/solution-pack-ai-chatbot/blob/release/1.0.0/README.md",
     "category": [
         "ML Service"
     ],
@@ -28,11 +28,25 @@
     "recordTags": [
         "mlengine"
     ],
-    "date": "2023-08-31T17:21:04+00:00",
+    "date": "2024-03-27T06:44:33+00:00",
     "contents": {
         "playbooks": [
             {
                 "name": "02 - Use Case - AI Chatbot"
+            }
+        ],
+        "connectors": [
+            {
+                "name": "Google Bard",
+                "apiName": "google-bard"
+            },
+            {
+                "name": "OpenAI",
+                "apiName": "openai"
+            },
+            {
+                "name": "Writesonic Chatsonic",
+                "apiName": "chatsonic"
             }
         ]
     }
